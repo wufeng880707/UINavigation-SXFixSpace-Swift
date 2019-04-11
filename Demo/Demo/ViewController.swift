@@ -9,7 +9,7 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.barStyle = .black
@@ -33,7 +33,7 @@ class ViewController: UIViewController {
         configBarItem()
         
     }
-
+    
     func configBarItem() {
         
         guard let nav = navigationController else { return }
@@ -75,6 +75,6 @@ class ViewController: UIViewController {
         let vc = UIImagePickerController()
         present(vc, animated: true, completion: nil)
     }
-
+    
 }
 

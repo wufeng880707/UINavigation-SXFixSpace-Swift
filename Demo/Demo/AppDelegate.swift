@@ -1,9 +1,9 @@
 //
 //  AppDelegate.swift
-//  UINavigation-SXFixSpace-Swift
+//  Demo
 //
-//  Created by charles on 2017/11/2.
-//  Copyright © 2017年 charles. All rights reserved.
+//  Created by charles on 2019/4/11.
+//  Copyright © 2019 charles. All rights reserved.
 //
 
 import UIKit
@@ -14,7 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         return true
     }
