@@ -1,5 +1,5 @@
 //
-//  UIBarButtonItemFixSpace.swift
+//  UINavigationSXFixSpace.swift
 //  UINavigation-SXFixSpace-Swift
 //
 //  Created by charles on 2017/11/2.
@@ -9,10 +9,14 @@
 import Foundation
 import UIKit
 
-
-public var sx_defultFixSpace: CGFloat = 0
-public var sx_fixedSpaceWidth: CGFloat = -20
-public var sx_disableFixSpace: Bool = false
+public class UINavigationSXFixSpace {
+    
+    public var sx_defultFixSpace: CGFloat = 0
+    public var sx_fixedSpaceWidth: CGFloat = -20
+    public var sx_disableFixSpace: Bool = false
+    
+    static let shared = UINavigationSXFixSpace()
+}
 
 extension NSObject {
     static func swizzleMethod(_ cls: AnyClass, originalSelector: Selector, swizzleSelector: Selector){
@@ -92,22 +96,22 @@ extension UINavigationController {
     
     @objc private func sx_viewWillAppear(_ animated: Bool) {
         if self is UIImagePickerController {
-            sx_tempDisableFixSpace = sx_disableFixSpace;
-            sx_disableFixSpace = true;
+            sx_tempDisableFixSpace = UINavigationSXFixSpace.shared.sx_disableFixSpace;
+            UINavigationSXFixSpace.shared.sx_disableFixSpace = true;
         }
         sx_viewWillAppear(animated)
     }
     
     @objc private func sx_viewWillDisappear(_ animated: Bool) {
         if self is UIImagePickerController {
-            sx_disableFixSpace = sx_tempDisableFixSpace;
+            UINavigationSXFixSpace.shared.sx_disableFixSpace = sx_tempDisableFixSpace;
         }
         sx_viewWillDisappear(animated)
     }
     
     @objc private func sx_pushViewController(_ viewController: UIViewController, animated: Bool) {
         sx_pushViewController(viewController, animated: animated)
-        if animated == false {
+        if UINavigationSXFixSpace.shared.sx_disableFixSpace == false && animated == false {
             navigationBar.layoutSubviews()
         }
     }
@@ -115,7 +119,7 @@ extension UINavigationController {
     
     @objc private func sx_popViewController(animated: Bool) -> UIViewController? {
         let vc = sx_popViewController(animated: animated)
-        if animated == false {
+        if UINavigationSXFixSpace.shared.sx_disableFixSpace == false && animated == false {
             navigationBar.layoutSubviews()
         }
         return vc
@@ -123,7 +127,7 @@ extension UINavigationController {
     
     @objc private func sx_popToViewController(_ viewController: UIViewController, animated: Bool) -> [UIViewController]? {
         let vcs = sx_popToViewController(viewController, animated: animated)
-        if animated == false {
+        if UINavigationSXFixSpace.shared.sx_disableFixSpace == false && animated == false {
             navigationBar.layoutSubviews()
         }
         return vcs
@@ -131,7 +135,7 @@ extension UINavigationController {
     
     @objc private func sx_popToRootViewController(animated: Bool) -> [UIViewController]? {
         let vcs = sx_popToRootViewController(animated: animated)
-        if animated == false {
+        if UINavigationSXFixSpace.shared.sx_disableFixSpace == false && animated == false {
             navigationBar.layoutSubviews()
         }
         return vcs
@@ -139,28 +143,30 @@ extension UINavigationController {
     
     @objc private func sx_setViewControllers(_ viewControllers: [UIViewController], animated: Bool) {
         sx_setViewControllers(viewControllers, animated: animated)
-        if animated == false {
+        if UINavigationSXFixSpace.shared.sx_disableFixSpace == false && animated == false {
             navigationBar.layoutSubviews()
         }
     }
 }
 
-@available(iOS 11.0, *)
 extension UINavigationBar {
     
     static let sx_initialize: Void = {
-        swizzleMethod(UINavigationBar.self,
-                      originalSelector: #selector(UINavigationBar.layoutSubviews),
-                      swizzleSelector: #selector(UINavigationBar.sx_layoutSubviews))
+        if #available(iOS 11.0, *) {
+            swizzleMethod(UINavigationBar.self,
+                          originalSelector: #selector(UINavigationBar.layoutSubviews),
+                          swizzleSelector: #selector(UINavigationBar.sx_layoutSubviews))
+        }
     }()
     
     @objc private func sx_layoutSubviews() {
         sx_layoutSubviews()
         
-        if sx_disableFixSpace == false {
+        if UINavigationSXFixSpace.shared.sx_disableFixSpace == false {
+            let space = UINavigationSXFixSpace.shared.sx_defultFixSpace
             for view in subviews {
                 if NSStringFromClass(view.classForCoder).contains("ContentView") {
-                    view.layoutMargins = UIEdgeInsets(top: 0, left: sx_defultFixSpace, bottom: 0, right: sx_defultFixSpace)
+                    view.layoutMargins = UIEdgeInsets(top: 0, left: space, bottom: 0, right: space)
                 }
             }
         }
@@ -191,7 +197,7 @@ extension UINavigationItem {
     }()
     
     @objc private func sx_setLeftBarButton(_ item: UIBarButtonItem?, animated: Bool) {
-        if sx_disableFixSpace {
+        if UINavigationSXFixSpace.shared.sx_disableFixSpace {
             sx_setLeftBarButton(item, animated: animated)
         } else {
             guard let item = item else { return }
@@ -200,7 +206,7 @@ extension UINavigationItem {
     }
     
     @objc private func sx_setRightBarButton(_ item: UIBarButtonItem?, animated: Bool) {
-        if sx_disableFixSpace {
+        if UINavigationSXFixSpace.shared.sx_disableFixSpace {
             sx_setRightBarButton(item, animated: animated)
         } else {
             guard let item = item else { return }
@@ -210,15 +216,15 @@ extension UINavigationItem {
     
     @objc private func sx_setLeftBarButtonItems(_ items: [UIBarButtonItem]?, animated: Bool) {
         guard let items = items else { return }
-        if sx_disableFixSpace {//禁止了直接设置
+        if UINavigationSXFixSpace.shared.sx_disableFixSpace {//禁止了直接设置
             sx_setLeftBarButtonItems(items, animated: animated)
         } else {//没有禁止,判断有没有fixedSpace类型的item
             guard items.count > 0, let first = items.first else { return }
-            if first.width == sx_fixedSpaceWidth {
+            if first.width == UINavigationSXFixSpace.shared.sx_fixedSpaceWidth {
                 sx_setLeftBarButtonItems(items, animated: animated)
             } else {
                 let space = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
-                space.width = sx_defultFixSpace
+                space.width = UINavigationSXFixSpace.shared.sx_fixedSpaceWidth
                 let itemsWithFix = [space] + items
                 sx_setLeftBarButtonItems(itemsWithFix, animated: animated)
             }
@@ -227,15 +233,15 @@ extension UINavigationItem {
     
     @objc private func sx_setRightBarButtonItems(_ items: [UIBarButtonItem]?, animated: Bool) {
         guard let items = items else { return }
-        if sx_disableFixSpace {
+        if UINavigationSXFixSpace.shared.sx_disableFixSpace {
             sx_setRightBarButtonItems(items, animated: animated)
         } else {
             guard items.count > 0, let first = items.first else { return }
-            if first.width == sx_fixedSpaceWidth {
+            if first.width == UINavigationSXFixSpace.shared.sx_fixedSpaceWidth {
                 sx_setRightBarButtonItems(items, animated: animated)
             } else {
                 let space = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
-                space.width = sx_defultFixSpace
+                space.width = UINavigationSXFixSpace.shared.sx_fixedSpaceWidth
                 let itemsWithFix = [space] + items
                 sx_setRightBarButtonItems(itemsWithFix, animated: animated)
             }

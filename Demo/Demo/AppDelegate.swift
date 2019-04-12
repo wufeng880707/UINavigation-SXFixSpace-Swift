@@ -16,6 +16,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        UINavigationSXFixSpace.shared.sx_defultFixSpace = 0
+        UINavigationSXFixSpace.shared.sx_disableFixSpace = false
         return true
     }
 
