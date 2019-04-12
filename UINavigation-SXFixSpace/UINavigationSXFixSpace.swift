@@ -15,7 +15,12 @@ public class UINavigationSXFixSpace {
     public var sx_fixedSpaceWidth: CGFloat = -20
     public var sx_disableFixSpace: Bool = false
     
-    static let shared = UINavigationSXFixSpace()
+    public class var shared: UINavigationSXFixSpace {
+        struct Static {
+            static let sxFixSpace = UINavigationSXFixSpace()
+        }
+        return Static.sxFixSpace
+    }
 }
 
 extension NSObject {
