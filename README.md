@@ -4,7 +4,7 @@
 添加支持cocoapods,
 
 ```
-pod "UINavigation-SXFixSpace-Swift", "~> 1.1.3"
+pod "UINavigation-SXFixSpace-Swift", "~> 1.1.4"
 ```
 
 OC版本:
