@@ -74,17 +74,20 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     @objc func intoAlbum() {
         let vc = UIImagePickerController()
         vc.delegate = self
-        UINavigationSXFixSpace.shared.sx_disableFixSpace = true
+//        UINavigationSXFixSpace.shared.sx_disableFixSpace = true
+        UINavigationSXFixSpace.shared.sx_fixedSpaceWidth = -10;
         present(vc, animated: true, completion: nil)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        UINavigationSXFixSpace.shared.sx_disableFixSpace = false
+//        UINavigationSXFixSpace.shared.sx_disableFixSpace = false
+        UINavigationSXFixSpace.shared.sx_fixedSpaceWidth = -20;
         dismiss(animated: true, completion: nil)
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        UINavigationSXFixSpace.shared.sx_disableFixSpace = false
+//        UINavigationSXFixSpace.shared.sx_disableFixSpace = false
+        UINavigationSXFixSpace.shared.sx_fixedSpaceWidth = -20;
         dismiss(animated: true, completion: nil)
     }
     
