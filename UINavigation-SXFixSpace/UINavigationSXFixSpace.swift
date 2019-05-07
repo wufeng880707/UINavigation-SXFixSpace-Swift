@@ -11,9 +11,10 @@ import UIKit
 
 public class UINavigationSXFixSpace {
     
-    public var sx_defultFixSpace: CGFloat = 0
-    public var sx_fixedSpaceWidth: CGFloat = -20
-    public var sx_disableFixSpace: Bool = false
+    public var sx_defultFixSpace: CGFloat = 0 //iOS11及以后item距离两端的间距
+    public var sx_fixedSpaceWidth: CGFloat = -20 //iOS7-iOS11设置的fixedSpace的item的宽度
+    public var sx_disableFixSpace: Bool = false //是否禁用距离调整
+    public var sx_disablerResetImagePickerSpace: Bool = false //是否禁止系统相册还原默认间距
     
     public class var shared: UINavigationSXFixSpace {
         struct Static {
@@ -72,7 +73,7 @@ extension UIViewController {
     }()
     
     @objc private func sx_viewWillAppear(_ animated: Bool) {
-        if self is UIImagePickerController {
+        if self is UIImagePickerController && UINavigationSXFixSpace.shared.sx_disablerResetImagePickerSpace == false {
             sx_tempDisableFixSpace = UINavigationSXFixSpace.shared.sx_disableFixSpace;
             UINavigationSXFixSpace.shared.sx_disableFixSpace = true;
         }
@@ -85,7 +86,7 @@ extension UIViewController {
     }
     
     @objc private func sx_viewWillDisappear(_ animated: Bool) {
-        if self is UIImagePickerController {
+        if self is UIImagePickerController && UINavigationSXFixSpace.shared.sx_disablerResetImagePickerSpace == false {
             UINavigationSXFixSpace.shared.sx_disableFixSpace = sx_tempDisableFixSpace;
         }
         sx_viewWillDisappear(animated)
