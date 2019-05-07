@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,7 +73,19 @@ class ViewController: UIViewController {
     
     @objc func intoAlbum() {
         let vc = UIImagePickerController()
+        vc.delegate = self
+        UINavigationSXFixSpace.shared.sx_disableFixSpace = true
         present(vc, animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        UINavigationSXFixSpace.shared.sx_disableFixSpace = false
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        UINavigationSXFixSpace.shared.sx_disableFixSpace = false
+        dismiss(animated: true, completion: nil)
     }
     
 }

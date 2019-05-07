@@ -18,7 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         UINavigationSXFixSpace.shared.sx_defultFixSpace = 0
         UINavigationSXFixSpace.shared.sx_disableFixSpace = false
-        UINavigationSXFixSpace.shared.sx_disablerResetImagePickerSpace = false
         return true
     }
 
