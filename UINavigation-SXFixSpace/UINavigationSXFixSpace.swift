@@ -43,12 +43,14 @@ extension NSObject {
     }
 }
 
-
 extension UIApplication {
     private static let classSwizzedMethod: Void = {
-        UINavigationController.sx_initialize
-        UINavigationItem.sx_initialize
-        UINavigationBar.sx_initialize
+        if #available(iOS 11.0, *) {
+            UIViewController.sx_initialize
+            UINavigationBar.sx_initialize
+        } else {
+            UINavigationItem.sx_initialize
+        }
     }()
     
     open override var next: UIResponder? {
@@ -60,20 +62,21 @@ extension UIApplication {
 extension UIViewController {
     
     static let sx_initialize: Void = {
-        swizzleMethod(UINavigationController.self,
-                      originalSelector: #selector(UINavigationController.viewWillAppear(_:)),
-                      swizzleSelector: #selector(UINavigationController.sx_viewWillAppear(_:)))
+        if #available(iOS 11.0, *) {
+            swizzleMethod(UINavigationController.self,
+                          originalSelector: #selector(UINavigationController.viewWillAppear(_:)),
+                          swizzleSelector: #selector(UINavigationController.sx_viewWillAppear(_:)))
+        }
     }()
     
     @objc private func sx_viewWillAppear(_ animated: Bool) {
         sx_viewWillAppear(animated)
-        if #available(iOS 11.0, *) {
-            if animated == false {
-                navigationController?.navigationBar.setNeedsLayout()
-            }
+        if animated == false {
+            navigationController?.navigationBar.setNeedsLayout()
         }
     }
 }
+
 
 extension UINavigationBar {
     
@@ -87,7 +90,6 @@ extension UINavigationBar {
     
     @objc private func sx_layoutSubviews() {
         sx_layoutSubviews()
-        
         if UINavigationSXFixSpace.shared.sx_disableFixSpace == false {
             let space = UINavigationSXFixSpace.shared.sx_defultFixSpace
             for view in subviews {
