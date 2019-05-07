@@ -11,8 +11,7 @@ import UIKit
 
 public class UINavigationSXFixSpace {
     
-    public var sx_defultFixSpace: CGFloat = 0 //iOS11及以后item距离两端的间距
-    public var sx_fixedSpaceWidth: CGFloat = -20 //iOS7-iOS11设置的fixedSpace的item的宽度
+    public var sx_defultFixSpace: CGFloat = 0 //item距离两端的间距
     public var sx_disableFixSpace: Bool = false //是否禁用距离调整
     
     public class var shared: UINavigationSXFixSpace {
@@ -147,11 +146,12 @@ extension UINavigationItem {
             sx_setLeftBarButtonItems(items, animated: animated)
         } else {//没有禁止,判断有没有fixedSpace类型的item
             guard items.count > 0, let first = items.first else { return }
-            if first.width == UINavigationSXFixSpace.shared.sx_fixedSpaceWidth {
+            let width = UINavigationSXFixSpace.shared.sx_defultFixSpace - 20
+            if first.width == width {
                 sx_setLeftBarButtonItems(items, animated: animated)
             } else {
                 let space = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
-                space.width = UINavigationSXFixSpace.shared.sx_fixedSpaceWidth
+                space.width = width
                 let itemsWithFix = [space] + items
                 sx_setLeftBarButtonItems(itemsWithFix, animated: animated)
             }
@@ -164,11 +164,12 @@ extension UINavigationItem {
             sx_setRightBarButtonItems(items, animated: animated)
         } else {
             guard items.count > 0, let first = items.first else { return }
-            if first.width == UINavigationSXFixSpace.shared.sx_fixedSpaceWidth {
+            let width = UINavigationSXFixSpace.shared.sx_defultFixSpace - 20
+            if first.width == width {
                 sx_setRightBarButtonItems(items, animated: animated)
             } else {
                 let space = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
-                space.width = UINavigationSXFixSpace.shared.sx_fixedSpaceWidth
+                space.width = width
                 let itemsWithFix = [space] + items
                 sx_setRightBarButtonItems(itemsWithFix, animated: animated)
             }

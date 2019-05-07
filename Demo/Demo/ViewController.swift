@@ -75,19 +75,19 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         let vc = UIImagePickerController()
         vc.delegate = self
 //        UINavigationSXFixSpace.shared.sx_disableFixSpace = true
-        UINavigationSXFixSpace.shared.sx_fixedSpaceWidth = -10;
+        UINavigationSXFixSpace.shared.sx_defultFixSpace = 10;
         present(vc, animated: true, completion: nil)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
 //        UINavigationSXFixSpace.shared.sx_disableFixSpace = false
-        UINavigationSXFixSpace.shared.sx_fixedSpaceWidth = -20;
+        UINavigationSXFixSpace.shared.sx_defultFixSpace = 0;
         dismiss(animated: true, completion: nil)
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
 //        UINavigationSXFixSpace.shared.sx_disableFixSpace = false
-        UINavigationSXFixSpace.shared.sx_fixedSpaceWidth = -20;
+        UINavigationSXFixSpace.shared.sx_defultFixSpace = 0;
         dismiss(animated: true, completion: nil)
     }
     
