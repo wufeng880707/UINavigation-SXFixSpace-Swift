@@ -148,7 +148,7 @@ extension UINavigationItem {
             sx_setLeftBarButtonItems(items, animated: animated)
         } else {//没有禁止,判断有没有fixedSpace类型的item
             guard items.count > 0, let first = items.first else { return }
-            let width = UINavigationSXFixSpace.shared.sx_defultFixSpace - 20
+            let width = UINavigationSXFixSpace.shared.sx_defultFixSpace - fixedSpace()
             if first.width == width {
                 sx_setLeftBarButtonItems(items, animated: animated)
             } else {
@@ -166,7 +166,7 @@ extension UINavigationItem {
             sx_setRightBarButtonItems(items, animated: animated)
         } else {
             guard items.count > 0, let first = items.first else { return }
-            let width = UINavigationSXFixSpace.shared.sx_defultFixSpace - 20
+            let width = UINavigationSXFixSpace.shared.sx_defultFixSpace - fixedSpace()
             if first.width == width {
                 sx_setRightBarButtonItems(items, animated: animated)
             } else {
@@ -177,6 +177,11 @@ extension UINavigationItem {
             }
         }
     }
+    
+    private func fixedSpace() -> CGFloat {
+        return min(UIScreen.main.bounds.width, UIScreen.main.bounds.height) > 375 ? 20 : 16
+    }
+    
 }
 
 
