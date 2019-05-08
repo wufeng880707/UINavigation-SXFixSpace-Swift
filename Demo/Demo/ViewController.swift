@@ -64,11 +64,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
     
     @objc func pushAction() {
-        navigationController?.pushViewController(ViewController(), animated: true)
+        navigationController?.pushViewController(ViewController(), animated: false)
     }
     
     @objc func popAction() {
-        navigationController?.popViewController(animated: true)
+        navigationController?.popViewController(animated: false)
     }
     
     @objc func intoAlbum() {

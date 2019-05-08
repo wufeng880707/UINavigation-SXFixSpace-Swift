@@ -63,9 +63,9 @@ extension UIViewController {
     
     static let sx_initialize: Void = {
         if #available(iOS 11.0, *) {
-            swizzleMethod(UINavigationController.self,
-                          originalSelector: #selector(UINavigationController.viewWillAppear(_:)),
-                          swizzleSelector: #selector(UINavigationController.sx_viewWillAppear(_:)))
+            swizzleMethod(UIViewController.self,
+                          originalSelector: #selector(UIViewController.viewWillAppear(_:)),
+                          swizzleSelector: #selector(UIViewController.sx_viewWillAppear(_:)))
         }
     }()
     
